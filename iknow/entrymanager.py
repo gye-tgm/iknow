@@ -1,0 +1,27 @@
+__author__ = 'gary'
+
+from iknow.trie import Trie
+
+
+class Entry(object):
+    def __init__(self, text):
+        self.text = text
+
+
+class EntryManager(object):
+    def __init__(self):
+        self.trie = Trie()
+        self.entries = []
+
+    def add_entry(self, entry):
+        idx = len(self.entries)
+        for word in entry.text.lower().split(" "):
+            self.trie.add(word, [])
+            self.trie.search(word).append(idx)
+        self.entries.append(entry)
+
+    def search_entries(self, word):
+        idx = self.trie.search(word.lower())
+        if idx is None:
+            return []
+        return [self.entries[i] for i in idx]
