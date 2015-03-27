@@ -32,10 +32,12 @@ class Trie(object):
     def add(self, word, data):
         cur = self.root
         for c in word:
-            cur = cur.find_child(c)
-            if cur is None:
-                cur = cur.add_child(TrieNode(c))
-        cur.data = data
+            nxt = cur.find_child(c)
+            if nxt is None:
+                nxt = cur.add_child(TrieNode(c))
+            cur = nxt
+        if cur.data is None:
+            cur.data = data
 
     def search(self, word):
         cur = self.root
