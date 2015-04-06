@@ -12,7 +12,7 @@ db = SQLAlchemy(app)
 
 api = Api(app)
 
-tags = db.Table('tags',
+tags = db.Table('tags', db.Model.metadata,
                 db.Column('tag_id', db.String, db.ForeignKey('tag.id')),
                 db.Column('knowledge_id', db.INTEGER,
                           db.ForeignKey('knowledge.id')))
@@ -34,12 +34,15 @@ class Knowledge(db.Model):
 class Tag(db.Model):
     id = db.Column(db.String, primary_key=True)
 
+    def __init__(self, tag):
+        self.id = tag
 
-class ExcerptAPI(Resource):
+
+class KnowledgeAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('content', type=str)
-        self.reqparse.add_argument('tags', type=str, actions='append')
+        self.reqparse.add_argument('tags', type=str, action='append')
 
     def get(self):
         args = self.reqparse.parse_args()
@@ -65,18 +68,18 @@ class ExcerptAPI(Resource):
 
     def post(self):
         """
-        Stores a new knoledge entry into the database. The tags will also be
+        Stores a new knowledge entry into the database. The tags will also be
         created.
         """
-
         args = self.reqparse.parse_args()
         knowledge = Knowledge(args['content'])
-        knowledge.tags.extend(args['tags'])
+        for tag in args['tags']:
+            knowledge.tags.append(Tag(tag))
         db.session.add(knowledge)
         db.session.commit()
 
 
-api.add_resource(ExcerptAPI, '/excerpts')
+api.add_resource(KnowledgeAPI, '/knowledge')
 
 if __name__ == '__main__':
     app.run(debug=True)
