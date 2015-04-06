@@ -52,7 +52,11 @@ class KnowledgeAPI(Resource):
 
         l = []
         for k in tag.knowledges:
-            l.append({'content': k.content})
+            l.append({
+                'id': k.id,
+                'content': k.content,
+                'tags': [tt.id for tt in k.tags]}
+            )
         return {'list': l}
 
     def put(self, id):
