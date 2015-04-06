@@ -1,4 +1,4 @@
-from iknow.entrymanager import EntryManager, Entry
+from iknow.resources.entrymanager import EntryManager, Entry
 
 __author__ = 'gary'
 

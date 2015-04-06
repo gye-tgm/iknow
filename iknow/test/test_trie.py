@@ -1,4 +1,4 @@
-from iknow.trie import Trie
+from iknow.resources.trie import Trie
 
 __author__ = 'gary'
 

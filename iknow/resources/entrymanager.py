@@ -1,6 +1,6 @@
 __author__ = 'gary'
 
-from iknow.trie import Trie
+from iknow.resources.trie import Trie
 
 
 class Entry(object):
@@ -16,8 +16,8 @@ class EntryManager(object):
     def add_entry(self, entry):
         idx = len(self.entries)
         for word in entry.text.lower().split(" "):
-            self.trie.add(word, [])
-            self.trie.search(word).append(idx)
+            self.trie.add(word, set())
+            self.trie.search(word).add(idx)
         self.entries.append(entry)
 
     def search_entries(self, word):
