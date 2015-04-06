@@ -4,7 +4,6 @@ RESTful webservice
 from flask import Flask
 from flask.ext.restful import Api, Resource, reqparse
 from flask.ext.sqlalchemy import SQLAlchemy
-from sqlalchemy.sql import ClauseElement
 
 
 app = Flask(__name__)
@@ -17,20 +16,6 @@ tags = db.Table('tags', db.Model.metadata,
                 db.Column('tag_id', db.String, db.ForeignKey('tag.id')),
                 db.Column('knowledge_id', db.INTEGER,
                           db.ForeignKey('knowledge.id')))
-
-# http://stackoverflow.com/a/2587041/2662330
-def get_or_create(session, model, defaults=None, **kwargs):
-    instance = session.query(model).filter_by(**kwargs).first()
-    if instance:
-        return instance, False
-    else:
-        params = dict((k, v) for k, v in kwargs.iteritems() if
-                      not isinstance(v, ClauseElement))
-        params.update(defaults or {})
-        instance = model(**params)
-        session.add(instance)
-        return instance, True
-
 
 class Knowledge(db.Model):
     id = db.Column(db.INTEGER, primary_key=True, autoincrement=True)
@@ -80,6 +65,8 @@ class KnowledgeListAPI(Resource):
             knowledge.tags.append(t)
         db.session.add(knowledge)
         db.session.commit()
+        return {'msg': 'Success'}
+
 
 
 class KnowledgeAPI(Resource):
@@ -100,6 +87,7 @@ class KnowledgeAPI(Resource):
         knowledge.content = args['content']
         knowledge.tags = [Tag(tag) for tag in args['tags']]
         db.session.commit()
+        return {'msg': 'Success'}
 
     def delete(self, id):
         """
@@ -108,6 +96,7 @@ class KnowledgeAPI(Resource):
         knowledge = Knowledge.query.filter_by(id=id).first()
         db.session.delete(knowledge)
         db.session.commit()
+        return {'msg': 'Success'}
 
 
 class KnowledgeQueryAPI(Resource):
