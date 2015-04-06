@@ -43,11 +43,12 @@ class KnowledgeAPI(Resource):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('content', type=str)
         self.reqparse.add_argument('tags', type=str, action='append')
+        self.reqparse.add_argument('id', type=id)
 
     def get(self):
         args = self.reqparse.parse_args()
         # TODO: multiple or single tags?
-        tag = Tag.query.filter_by(id=args['tag'])
+        tag = Tag.query.filter_by(id=args['tags'][0]).first()
 
         l = []
         for k in tag.knowledges:
@@ -60,11 +61,14 @@ class KnowledgeAPI(Resource):
         """
         pass
 
-    def delete(self, id):
+    def delete(self):
         """
-        Delete
+        Deletes the entry
         """
-        pass
+        args = self.reqparse.parse_args()
+        knowledge = Knowledge.query.filter_by(id=args['id']).first()
+        db.session.delete(knowledge)
+        db.session.commit()
 
     def post(self):
         """
@@ -82,4 +86,4 @@ class KnowledgeAPI(Resource):
 api.add_resource(KnowledgeAPI, '/knowledge')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, use_evalex=False)
