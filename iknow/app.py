@@ -1,13 +1,16 @@
 """
 RESTful webservice
 """
+import os
 from flask import Flask
 from flask.ext.restful import Api, Resource, reqparse
 from flask.ext.sqlalchemy import SQLAlchemy
 
 
+basedir = os.path.abspath(os.path.dirname(__file__))
+
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'test.db')
 db = SQLAlchemy(app)
 
 api = Api(app)
@@ -81,6 +84,9 @@ class KnowledgeAPI(Resource):
         """
         args = self.reqparse.parse_args()
         knowledge = Knowledge(args['content'])
+
+        print(args)
+
         for tag in args['tags']:
             knowledge.tags.append(Tag(tag))
         db.session.add(knowledge)
