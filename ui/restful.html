@@ -5,12 +5,42 @@
         <link rel="stylesheet" type="text/css" href="res/bootstrap.min.css">
 
         <script src="res/jquery-2.1.3.min.js"></script>
+        <script src="restful.js"></script>
     </head>
     <body>
         <div class="container">
             <h1>RESTFul UI</h1>
             <hr>
 
+            <h3>Request</h3>
+            <form>
+                <div class="form-group">
+                    <label for="tf-url">URL</label>
+                    <input id="tf-url" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label for="ta-params">Parameters</label>
+                    <textarea id="ta-params" class="form-control" rows="5"></textarea>
+                </div>
+                <button id="btn-get" type="button" class="btn btn-default" onclick="request('GET')">GET</button>
+                <button id="btn-post" type="button" class="btn btn-default" onclick="request('POST')">POST</button>
+                <button id="btn-put" type="button" class="btn btn-default" onclick="request('PUT')">PUT</button>
+                <button id="btn-delete" type="button" class="btn btn-default" onclick="request('DELETE')">DELETE</button>
+            </form>
+
+            <hr>
+            <h3>Response</h3>
+            <pre id="result" class="well"></pre>
         </div>
     </body>
+    <script>
+        /* no submit on enter */
+        $(function() {
+           $('#tf-url').bind('keydown', function(e) {
+                if (e.keyCode == 13) {
+                    e.preventDefault();
+                }
+            });
+        });
+    </script>
 </html>
