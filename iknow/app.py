@@ -4,10 +4,11 @@ RESTful webservice
 from flask import Flask
 from flask.ext.restful import Api, Resource, reqparse
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import ClauseElement
 
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///.test.db'
 db = SQLAlchemy(app)
 
 api = Api(app)
@@ -16,6 +17,19 @@ tags = db.Table('tags', db.Model.metadata,
                 db.Column('tag_id', db.String, db.ForeignKey('tag.id')),
                 db.Column('knowledge_id', db.INTEGER,
                           db.ForeignKey('knowledge.id')))
+
+# http://stackoverflow.com/a/2587041/2662330
+def get_or_create(session, model, defaults=None, **kwargs):
+    instance = session.query(model).filter_by(**kwargs).first()
+    if instance:
+        return instance, False
+    else:
+        params = dict((k, v) for k, v in kwargs.iteritems() if
+                      not isinstance(v, ClauseElement))
+        params.update(defaults or {})
+        instance = model(**params)
+        session.add(instance)
+        return instance, True
 
 
 class Knowledge(db.Model):
@@ -58,7 +72,12 @@ class KnowledgeListAPI(Resource):
         """
         args = self.reqparse.parse_args()
         knowledge = Knowledge(args['content'])
-        knowledge.tags = [Tag(tag) for tag in args['tags']]
+        for tag in args['tags']:
+            t = Tag.query.filter_by(id=tag).first()
+            if t is None:
+                t = Tag(tag)
+                db.session.add(t)
+            knowledge.tags.append(t)
         db.session.add(knowledge)
         db.session.commit()
 
@@ -103,7 +122,7 @@ class KnowledgeQueryAPI(Resource):
         return {'list': [k.mapped() for k in tag.knowledges]}
 
 
-api.add_resource(KnowledgeQueryAPI, '/query')
+api.add_resource(KnowledgeQueryAPI, '/q')
 api.add_resource(KnowledgeListAPI, '/knowledge')
 api.add_resource(KnowledgeAPI, '/knowledge/<int:id>')
 
