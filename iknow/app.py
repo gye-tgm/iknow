@@ -2,9 +2,11 @@
 RESTful webservice
 """
 import os
+
 from flask import Flask
 from flask.ext.restful import Api, Resource, reqparse
 from flask.ext.sqlalchemy import SQLAlchemy
+from sqlalchemy.sql import ClauseElement
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -73,7 +75,7 @@ class KnowledgeListAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('content', type=str)
-        self.reqparse.add_argument('tags', type=str, action='append')
+        self.reqparse.add_argument('tags', type=str)
 
     def post(self):
         """
@@ -82,7 +84,7 @@ class KnowledgeListAPI(Resource):
         """
         args = self.reqparse.parse_args()
         knowledge = Knowledge(args['content'])
-        for tag in args['tags']:
+        for tag in args['tags'].split(','):
             t = Tag.query.filter_by(id=tag).first()
             if t is None:
                 t = Tag(tag)
@@ -98,7 +100,7 @@ class KnowledgeAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
         self.reqparse.add_argument('content', type=str)
-        self.reqparse.add_argument('tags', type=str, action='append')
+        self.reqparse.add_argument('tags', type=str)
 
     def get(self, id):
         knowledge = Knowledge.query.filter_by(id=id).first()
@@ -110,7 +112,7 @@ class KnowledgeAPI(Resource):
         args = self.reqparse.parse_args()
         knowledge = Knowledge.query.filter_by(id=id).first()
         knowledge.content = args['content']
-        knowledge.tags = [Tag(tag) for tag in args['tags']]
+        knowledge.tags = [Tag(tag) for tag in args['tags'].split(',')]
         db.session.commit()
         return {'msg': 'Success'}
 
@@ -127,13 +129,13 @@ class KnowledgeAPI(Resource):
 class KnowledgeQueryAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('tags', type=str, action='append')
+        self.reqparse.add_argument('tags', type=str)
 
     def get(self):
         # TODO: multiple or single tags?
         args = self.reqparse.parse_args()
 
-        tag = Tag.query.filter_by(id=args['tags'][0]).first()
+        tag = Tag.query.filter_by(id=args['tags']).first()
         return {'list': [k.mapped() for k in tag.knowledges]}
 
 
