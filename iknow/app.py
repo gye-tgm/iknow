@@ -129,13 +129,13 @@ class KnowledgeAPI(Resource):
 class KnowledgeQueryAPI(Resource):
     def __init__(self):
         self.reqparse = reqparse.RequestParser()
-        self.reqparse.add_argument('tags', type=str)
+        self.reqparse.add_argument('tag', type=str)
 
     def get(self):
         # TODO: multiple or single tags?
         args = self.reqparse.parse_args()
 
-        tag = Tag.query.filter_by(id=args['tags']).first()
+        tag = Tag.query.filter_by(id=args['tag']).first()
         return {'list': [k.mapped() for k in tag.knowledges]}
 
 

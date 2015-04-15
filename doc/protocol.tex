@@ -145,6 +145,35 @@ data of the backend.
 
 \section{Implementation}
 
+\subsection{REST Webservice}
+
+The REST Webservice was fully implemented within Python and using the Flask API,
+especially using the Flask RESTful module. Below, we will show the esssential
+part that was necessary for implementing a fully responsible RESTful API.  
+
+The Webservice follows the design that was thoroughly described in section
+\ref{sec:design}.
+
+\subsubsection{URI}
+
+The URI which can be used to call the different methods offered by the
+webservice are listed down in the following table (Table \ref{tab:uri}).
+
+\begin{table}[htbp]
+  \centering
+  \begin{tabular}{| c | c | c | l | } \hline
+    \textbf{URI} & \textbf{Parameters} & \textbf{Method} & \textbf{Meaning} \\ \hline
+    \lstinline|/q| & \lstinline|?tags=tag1,tag2| & \lstinline|GET| & Queries the data with the specified tags.  \\ \hline
+    \lstinline|/knowledge| & \lstinline|content=str, tags=str| & \lstinline|POST| & Adds a new entry. \\ \hline
+    \lstinline|/knowledge/<id>| &  & \lstinline|GET| & Retrieves the data of the given id  \\ \hline
+    \lstinline|/knowledge/<id>| & \lstinline|content=str, tags=str| & \lstinline|PUT| & Updates the entry.   \\ \hline
+    \lstinline|/knowledge/<id>| &  & \lstinline|DELETE| & Removes the entry with the given id \\ \hline
+  \end{tabular}
+  \caption{The URI options for the user}
+  \label{tab:uri}
+\end{table}
+
+
 \subsection{}
 
 \section{Testing}
