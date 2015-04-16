@@ -186,6 +186,63 @@ webservice are listed down in the following table (Table \ref{tab:uri}).
   \label{tab:uri}
 \end{table}
 
+\subsubsection{Flask}
+
+Two vital objects have to instantiated intially: 
+
+\begin{lstlisting}
+from flask import Flask
+from flask.ext.restful import Api
+
+app = Flask(__name__)
+api = Api(app)
+\end{lstlisting}
+\vspace{10pt}
+
+Now we need to define an API class for each resource that the webservice should
+offer. These classes are required to implement the methods that are available,
+e.g., GET, POST, PUT, ..., as Python methods with the same corresponding name,
+however, in lowercase, e.g, get, put, post, etc. One example will be shown
+below. 
+
+\begin{lstlisting}
+class KnowledgeAPI(Resource):
+    def __init__(self):
+        self.reqparse = reqparse.RequestParser()
+        self.reqparse.add_argument('content', type=str)
+        self.reqparse.add_argument('tags', type=str)
+
+    def get(self, id):
+        knowledge = Knowledge.query.filter_by(id=id).first()
+        if knowledge is None:
+            return {}
+        return knowledge.mapped()
+
+    def put(self, id):
+        args = self.reqparse.parse_args()
+        knowledge = Knowledge.query.filter_by(id=id).first()
+        knowledge.content = args['content']
+        knowledge.tags = [Tag(tag) for tag in args['tags'].split(',')]
+        db.session.commit()
+        return {'msg': 'Success'}
+
+    def delete(self, id):
+        knowledge = Knowledge.query.filter_by(id=id).first()
+        db.session.delete(knowledge)
+        db.session.commit()
+        return {'msg': 'Success'}
+\end{lstlisting}
+
+\vspace{10pt}
+
+The code is responsible for accessing the database with the elementary CRUD
+commands. 
+
+However, these classes must be added to the \lstinline|api| object first. 
+
+\begin{lstlisting}
+api.add_resource(KnowledgeQueryAPI, '/q')
+\end{lstlisting}
 
 \subsection{}
 

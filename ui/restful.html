@@ -1,6 +1,6 @@
 <html>
     <head>
-        <title>RESTFul UI</title>
+        <title>RESTful UI</title>
 
         <link rel="stylesheet" type="text/css" href="res/bootstrap.min.css">
 
@@ -9,8 +9,57 @@
     </head>
     <body>
         <div class="container">
-            <h1>RESTFul UI</h1>
+            <h1>RESTful UI</h1>
             <hr>
+
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Mini-Tutorial
+                </div>
+                <div class="panel-body">
+                    <p>
+                        <b>Searching</b> for entries with a particular tag is easy
+                        as ABC. Just set the URL as <code>http://localhost:5000/q</code> and
+                        append it with only one GET parameter <code>tag</code>. This should have the value of the tag you are
+                        searching for.
+		Confirm with <code> GET </code>. 
+                    </p>
+
+                    <p>
+		      <b>Inserting</b> a new entry is simple as well. Append to the
+		      URL with <code>knowledge</code> and enter into the input
+		      area a JSON object with two key value pairs: namely
+		      "content" with the corresponding content of the entry, and
+		      the "tags" with the tags that it should be associated with
+		      as a CSV string. 
+
+		      For example:
+
+		      <code>
+		       { "content": "Classified content",
+			 "tags": "gov,nsa"
+		       }
+		      </code>
+		Confirm with <code> POST </code>. 
+		    </p>
+
+		      <p> <b>Deleting</b> an entry ain't no rocket surgery as
+		      well. Merely append to the URL
+		      <code>/knowledge/id </code>, where <code>id</code> is the id of
+		      the entry to be deleted (can be found out by using a
+		      search query). Confirm with <code> DELETE </code>. 
+		      </p>
+
+
+		      <p> Finally, <b>updating</b> can be performed by following
+		      the same instructions as <b>inserting</b> but using
+		      <code>/knowledge/id</code> as the URI instead, where
+		      <code>id</code> is the id of the entry to be updated. 
+
+		Confirm with <code> PUT </code>. 
+		      </p> 
+                </div>
+            </div>
 
             <h3>Request</h3>
             <form>
@@ -18,8 +67,9 @@
                     <label for="tf-url">URL</label>
                     <input id="tf-url" type="text" class="form-control">
                 </div>
+
                 <div class="form-group">
-                    <label for="ta-params">Parameters</label>
+                    <label for="ta-params">Parameters (General method) </label>
                     <textarea id="ta-params" class="form-control" rows="5"></textarea>
                 </div>
                 <button id="btn-get" type="button" class="btn btn-default" onclick="request('GET')">GET</button>
