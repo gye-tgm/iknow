@@ -152,7 +152,7 @@ class KnowledgeQueryAPI(Resource):
         args = self.reqparse.parse_args()
 
         tag = Tag.query.filter_by(id=args['tag']).first()
-        return {'list': [k.mapped() for k in tag.knowledges]}
+        return {'list': [] if not tag else [k.mapped() for k in tag.knowledges]}
 
 
 api.add_resource(KnowledgeQueryAPI, '/q')
