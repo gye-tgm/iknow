@@ -4,8 +4,7 @@ import random
 import sys
 
 FILE = 'sentences.txt'
-# NUM_SENTENCES = 1000000
-NUM_SENTENCES = 10000
+NUM_SENTENCES = 10**6
 
 dictfile = sys.argv[1]
 

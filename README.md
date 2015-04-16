@@ -47,3 +47,19 @@ GET query on `http://localhost:5000/q?tag=commas`.
 
 If an entry with a particular id should be deleted, then use the DELETE
 command on `http://localhost:5000/knowledge/<id>`. 
+
+
+Generating some data
+--------------------
+
+This may take some time:
+
+```
+$ python scripts/sentences.py /usr/share/dict/words
+```
+
+The package must be installed first beforehand. 
+
+
+
+
