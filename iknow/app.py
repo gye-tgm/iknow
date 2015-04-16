@@ -114,7 +114,7 @@ class KnowledgeAPI(Resource):
         """
         knowledge = Knowledge.query.filter_by(id=id).first()
         if knowledge is None:
-            return {}
+            return {'msg': 'Does not exist'}
         return knowledge.mapped()
 
     def put(self, id):
@@ -124,8 +124,17 @@ class KnowledgeAPI(Resource):
         """
         args = self.reqparse.parse_args()
         knowledge = Knowledge.query.filter_by(id=id).first()
+
+        if knowledge is None:
+            return {'msg': 'Does not exist'}
         knowledge.content = args['content']
-        knowledge.tags = [Tag(tag) for tag in args['tags'].split(',')]
+        knowledge.tags = []
+        for tag in args['tags'].split(','):
+            t = Tag.query.filter_by(id=tag).first()
+            if t is None:
+                t = Tag(tag)
+                db.session.add(t)
+            knowledge.tags.append(t)
         db.session.commit()
         return {'msg': 'Success'}
 
@@ -134,6 +143,9 @@ class KnowledgeAPI(Resource):
         Deletes the entry with the given id. 
         """
         knowledge = Knowledge.query.filter_by(id=id).first()
+
+        if knowledge is None:
+            return {'msg': 'Does not exist'}
         db.session.delete(knowledge)
         db.session.commit()
         return {'msg': 'Success'}
