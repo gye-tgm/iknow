@@ -157,7 +157,14 @@ guaranteed. The UML class diagram that is shown in the following figure (see
 Figure \ref{fig:uml}) represents the model classes that store the underlying
 data of the backend. 
 
-% todo: insert uml diagram
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=5in]{img/uml}
+	\caption{UML class-diagram of the model}
+	\label{fig:uml}
+\end{figure}
+
+The main idea is to associate each \lstinline|Knowledge| object with a certain number of tags which can be searched for. This drastically reduces the amount of text to search, since only the tags (which are likely not that many) have to be compared. The rest is just very fast foreign-key matching.
 
 \subsection{SOAP Message Structure}
 
@@ -229,7 +236,7 @@ webservice are listed down in the following table (Table \ref{tab:uri}).
 
 \subsubsection{Flask}
 
-Two vital objects have to instantiated intially: 
+Two vital objects have to instantiated initially: 
 
 \begin{lstlisting}
 from flask import Flask
@@ -386,6 +393,23 @@ A proper WSDL file is automatically generated when the service is published and 
 \end{lstlisting}
 
 \section{Testing}
+
+Tests with small a dataset were performed. 
+
+\subsection{Creating the Schema}
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[width=0.7\textwidth]{img/schema}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\textwidth]{img/testput0}
+\end{figure}
+
+\begin{figure}[h!]
+  \includegraphics[width=\textwidth]{img/testput1}
+\end{figure}
 
 \section{Problems \& Solutions}
 
