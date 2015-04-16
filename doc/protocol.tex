@@ -36,16 +36,17 @@
 \lstnewenvironment{code}[1][]
 {\lstset{numbers=left,
 		numberstyle=\tiny,
-		keywordstyle=\color{blue},       % keyword style
+		keywordstyle=\color{blue},       	% keyword style
 		basicstyle=\footnotesize\ttfamily,	% font
 		numbers=left,						% line numbers
 		tabsize=2,							% tabsize in spaces
 		#1}}
 {}
 
-\title{DezSys06 - Verschlüsselung}
+\title{DezSys08 - Service Oriented Architecture and Restful Webservice}
 \author{Elias Frantar, Gary Ye (5AHITT)}
 \date{\today{}, Wien}
+
 \begin{document}
 
 \lstset{
@@ -77,7 +78,7 @@
   belowskip=-3em,    
 }
 
-% \setlength\parindent{0pt}
+\setlength\parindent{0pt}
 
 \maketitle
 \newpage
@@ -90,58 +91,118 @@ Das neu eröffnete Unternehmen iKnow Systems ist spezialisiert auf
 Knowledgemanagement und bietet seinen Kunden die Möglichkeiten Daten und
 Informationen jeglicher Art in eine Wissensbasis einzupflegen und anschließend
 in der zentralen Wissensbasis nach Informationen zu suchen (ähnlich wikipedia).
-
+\\\\\
 Folgendes ist im Rahmen der Aufgabenstellung verlangt:
 
-Entwerfen Sie ein Datenmodell, um die Eintraege der Wissensbasis zu speichern
-und um ein optimitiertes Suchen von Eintraegen zu gewaehrleisten. [2Pkt]
+\begin{itemize}
+	
+	\item Entwerfen Sie ein Datenmodell, um die Eintraege der Wissensbasis zu speichern und um ein optimitiertes Suchen von Eintraegen zu gewaehrleisten. [2Pkt]
 
-Entwickeln Sie mittels RESTful Webservices eine Schnittstelle, um die
-Wissensbasis zu verwalten. Es muessen folgende Operationen angeboten werden: -
-Hinzufuegen eines neuen Eintrags - Aendern eines bestehenden Eintrags -
-Loeschen eines bestehenden Eintrags
+	\item Entwickeln Sie mittels RESTful Webservices eine Schnittstelle, um die Wissensbasis zu verwalten. Es muessen folgende Operationen angeboten werden: 
+	
+	\begin{itemize}
+		\item Hinzufuegen eines neuen Eintrags
+		\item Aendern eines bestehenden Eintrags
+		\item Loeschen eines bestehenden Eintrags
+	\end{itemize}
+	
+	\item Alle Operationen muessen ein Ergebnis der Operation zurueckliefern. [3Pkt]
 
-Alle Operationen muessen ein Ergebnis der Operation zurueckliefern. [3Pkt]
+	\item Entwickeln Sie in Java ein SOA Webservice, dass die Funktionalitaet Suchen anbietet und das SOAP Protokoll einbindet. Erzeugen Sie fuer dieses Webservice auch eine WSDL-Datei. [3Pkt]
 
-Entwickeln Sie in Java ein SOA Webservice, dass die Funktionalitaet Suchen
-anbietet und das SOAP Protokoll einbindet. Erzeugen Sie fuer dieses Webservice
-auch eine WSDL-Datei. [3Pkt]
+	\item Entwerfen Sie eine Weboberflaeche, um die RESTful Webservices zu verwenden. [3Pkt]
 
-Entwerfen Sie eine Weboberflaeche, um die RESTful Webservices zu verwenden.
-[3Pkt]
+	\item Implementieren Sie einen einfachen Client mit einem User Interface (auch Commandline UI moeglich), der das SOA Webservice aufruft. [2Pkt]
 
-Implementieren Sie einen einfachen Client mit einem User Interface (auch
-Commandline UI moeglich), der das SOA Webservice aufruft. [2Pkt]
+	\item Dokumentieren Sie im weiteren Verlauf den Datentransfer mit SOAP. [1Pkt]
 
-Dokumentieren Sie im weiteren Verlauf den Datentransfer mit SOAP. [1Pkt]
+	\item Protokoll ist erforderlich! [2Pkt] 
+	
+\end{itemize}
 
-Protokoll ist erforderlich! [2Pkt] Info: Gruppengroesse: 2 Mitglieder Punkte:
-16
-
+Info: Gruppengroesse: 2 Mitglieder Punkte: 16
+\\\\
 Zum Testen bereiten Sie eine Routine vor, um die Wissensbasis mit einer 1
 Million Datensaetze zu fuellen. Die Datensaetze sollen mindestens eine Laenge
 beim Suchbegriff von 10 Zeichen und bei der Beschreibung von 100 Zeichen haben!
 Ist die Performance bei der Suche noch gegeben?
 
-Links:
+\section{Effort Estimation and Work Distribution}
 
-JEE Webservices: http://docs.oracle.com/javaee/6/tutorial/doc/gijti.html
+The following table compares the estimated with the actually needed
+amount of time for completing each individual task.
+\\\\
+The estimation is in the second column while the columns that follow
+are actual values.
 
-Apache Web Services Project: http://ws.apache.org/
+\parskip 12pt
+\begin{tabular} {| l | c | c | c | c |}
+	\hline
+	Task & Estimation & Elias & Gary & Team	\\ \hline \hline
+	Preparation & 5.0 & 1 &  0.5 & 1.5		\\ \hline
+	Design & 5.0  & 0.5 &	1.0  & 1.5			\\ \hline
+	Implementation & 10.0 & 5.0 & 5.0 & 10 \\ \hline
+	Testing & 5.0	& 1.5	& 2 & 3.5 \\ \hline
+	Documentation	& 5.0 & 2 & 1.5 & 3.5	\\ \hline 
+	Total	& 30.0	& 10 & 10 & 20 \\
+	\hline
+\end{tabular}
 
-Apache Axis/Axis2: http://axis.apache.org http://axis.apache.org/axis2/java/core/
+\section{Design}
 
-IBM Article: Java Web services - JAXB and JAX-WS in Axis2:
-http://www.ibm.com/developerworks/java/library/j-jws8/index.html
-
-\section{Application Design}
+\subsection{Application Design}
 
 The design was carefully designed such that efficiency and reliability could be
 guaranteed. The UML class diagram that is shown in the following figure (see
 Figure \ref{fig:uml}) represents the model classes that store the underlying
 data of the backend. 
 
-% todo: insert uml diagram
+\begin{figure}[h!]
+	\centering
+	\includegraphics[width=5in]{img/uml}
+	\caption{UML class-diagram of the model}
+	\label{fig:uml}
+\end{figure}
+
+The main idea is to associate each \lstinline|Knowledge| object with a certain number of tags which can be searched for. This drastically reduces the amount of text to search, since only the tags (which are likely not that many) have to be compared. The rest is just very fast foreign-key matching.
+
+\subsection{SOAP Message Structure}
+
+SOAP (\textit{Simple Object Access Protocol}) is a networking protocol which uses XML to communicate. The message structure is defined in specific XML schema.
+
+\begin{quote}
+SOAP message is an ordinary XML document containing the following elements:
+
+\begin{itemize}
+	\item An Envelope element that identifies the XML document as a SOAP message
+	\item A Header element that contains header information
+	\item A Body element that contains call and response information
+	\item A Fault element containing errors and status information
+\end{itemize}
+	
+\begin{lstlisting}
+<?xml version="1.0"?>
+<soap:Envelope
+xmlns:soap="http://www.w3.org/2001/12/soap-envelope"
+soap:encodingStyle="http://www.w3.org/2001/12/soap-encoding">
+	
+<soap:Header>
+...
+</soap:Header>
+	
+<soap:Body>
+...
+<soap:Fault>
+...
+</soap:Fault>
+</soap:Body>
+	
+</soap:Envelope>
+\end{lstlisting}
+\vspace{10pt}
+\cite{soap}
+
+\end{quote}
 
 \section{Implementation}
 
@@ -175,7 +236,7 @@ webservice are listed down in the following table (Table \ref{tab:uri}).
 
 \subsubsection{Flask}
 
-Two vital objects have to instantiated intially: 
+Two vital objects have to instantiated initially: 
 
 \begin{lstlisting}
 from flask import Flask
@@ -231,7 +292,105 @@ However, these classes must be added to the \lstinline|api| object first.
 api.add_resource(KnowledgeQueryAPI, '/q')
 \end{lstlisting}
 
-\subsection{}
+\subsection{SOA Service}
+
+The SOA part of this exercise was implemented with the help of \cite{jax-ws-example}.
+
+\subsubsection{Service}
+
+The step for creating a SOA service is to create an interface for the service.
+
+\begin{lstlisting}
+@WebService
+@SOAPBinding(style = Style.RPC)
+public interface IDontKnow {
+	@WebMethod String query(String tag);
+}
+\end{lstlisting}
+
+It is very important to add the correct annotations to mark this interface as a SOA service.
+\\\\
+This service-interface can then be implemented by a concrete service instance.
+
+\begin{lstlisting}
+@WebService(endpointInterface = "idontknow.IDontKnow")
+public class IDontKnowImpl implements IDontKnow {
+
+	@Override
+	public String query(String tag) {
+		System.out.println("Called `query()` with tag: \"" + tag + "\"");
+	
+		try {
+			URL url = new URL("http://localhost:5000/q?tag=" + tag);
+			URLConnection conn = url.openConnection();
+			InputStream is = conn.getInputStream();
+
+			return convertStreamToString(is);
+		} catch(Exception e) {
+			e.printStackTrace();
+			return "Error: " + e.getMessage();
+		}
+	}
+	...
+}
+ \end{lstlisting}
+ 
+The only thing this our method implementation does, is to query the given Tag by calling our Rest-service.
+\\\\
+This implementation can then be published as real SOA webservice whith the code below.
+
+\begin{lstlisting}
+public class IDontKnowPublisher {
+	public static void main(String[] args) {
+		try {
+			String url = "http://localhost:9999/ws/idontknow";
+			Endpoint.publish(url, new IDontKnowImpl());
+			System.out.println("Published `IDontKnowImpl` at \"" + url + "\"");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+}
+\end{lstlisting}
+
+It publishes an object of the service implementation at a specified URL. The Service is now running and can be accessed by clients via RPC.
+
+\subsubsection{Client}
+
+A SOA service can be accessed by many different clients. We implemented one in Java. To do that all that has creating a URL mapping it to the Service name and retrieving a remote  object of the service with \lstinline|service.getPort(IDontKno.class);| The methods of this retrieved instance can then be used similar to a local object. The full code is show below.
+
+\begin{lstlisting}
+public class IDontKnowClient {
+
+	public static void main(String[] args) throws Exception {
+		if (args.length != 1) {
+			System.out.println("usage: IDontKnowClient <tag>");
+			return;
+		}
+
+		try {
+			URL url = new URL("http://localhost:9999/ws/idontknow?wsdl");
+			QName qname = new QName("http://idontknow/", "IDontKnowImplService");
+
+			Service service = Service.create(url, qname);
+			IDontKnow idontknow = service.getPort(IDontKnow.class);
+
+			System.out.println(idontknow.query(args[0]));
+		} catch (Exception e) {
+			System.out.println("Something went wrong: " + e.getMessage());
+		}
+	}
+
+}
+\end{lstlisting}
+
+\subsubsection{WSDL}
+
+A proper WSDL file is automatically generated when the service is published and is available at the given URL. So we opened \lstinline|http://localhost:9999/ws/idontknow?wsdl| and saved the response in a simple XML-file which is also shown below. The file is shipped with the submission in the \lstinline|wsdl.xml| file.
+
+\begin{lstlisting}
+
+\end{lstlisting}
 
 \section{Testing}
 
@@ -252,9 +411,9 @@ Tests with small a dataset were performed.
   \includegraphics[width=\textwidth]{img/testput1}
 \end{figure}
 
-
-
 \section{Problems \& Solutions}
+
+No major problems occurred while realizing this exercise.
 
 \nocite{*}
 \bibliographystyle{plain}
